@@ -34,9 +34,10 @@ public class CLubController {
 		return clubService.getClub(id);
 	}
 	 @PostMapping("/add")
-	public Club createClub(@RequestBody Club club) {
-		return clubService.saveClub(club);
-	}
+	 public Club createClub(@RequestBody Club club) {
+	     return clubService.saveClub(club);
+	 }
+
 	 @PutMapping("/update/{id}")
 	public Club updateClub(@RequestBody Club club) {
 	    return clubService.UpdateClub(club);

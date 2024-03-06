@@ -17,12 +17,21 @@ public class CompetencesAndHistorique {
     private String historiquePerformence;
     private Double kdRiot;
     private Double winPorsontage;
-    private String playerName;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player_id")
     private Player player;
-    
+
+    // Getter and Setter
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     
     
 	public Long getIdCompetence() {
@@ -55,12 +64,7 @@ public class CompetencesAndHistorique {
 	public void setWinPorsontage(Double winPorsontage) {
 		this.winPorsontage = winPorsontage;
 	}
-	public String getPlayerName() {
-		return playerName;
-	}
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
-	}
+	
 	public CompetencesAndHistorique(Long idCompetence, String competence, String historiquePerformence, Double kdRiot,
 			Double winPorsontage, String playerName) {
 		super();
@@ -69,8 +73,7 @@ public class CompetencesAndHistorique {
 		this.historiquePerformence = historiquePerformence;
 		this.kdRiot = kdRiot;
 		this.winPorsontage = winPorsontage;
-		this.playerName = playerName;
-	}
+		}
 	public CompetencesAndHistorique() {
 		super();
 		// TODO Auto-generated constructor stub

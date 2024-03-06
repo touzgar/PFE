@@ -10,4 +10,5 @@ import com.example.demo.Model.Team;
 public interface TeamRepository extends JpaRepository<Team, Long> {
 	 List<Team> findByTeamNameContainingIgnoreCase(String teamName);
 	 Optional<Team> findByTeamName(String teamName);
+	 
 }

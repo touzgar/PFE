@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -17,12 +16,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
+
 public class Team {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +46,20 @@ public class Team {
 	}
 	@JsonManagedReference
 	
+	
+	 @OneToOne(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private AchivementsTeam achivementsTeam;
+
+    // Getters and setters for achivementsTeam
+
+    public AchivementsTeam getAchivementsTeam() {
+        return achivementsTeam;
+    }
+
+    public void setAchivementsTeam(AchivementsTeam achivementsTeam) {
+        this.achivementsTeam = achivementsTeam;
+    }
+	
 	 @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	    private List<Player> players;
 
@@ -56,7 +71,10 @@ public class Team {
 	    public void setPlayers(List<Player> players) {
 	        this.players = players;
 	    }
-		
+	    
+	    
+	    
+	
 	@OneToOne(fetch = FetchType.EAGER)
 	    @JoinColumn(name = "club_id", referencedColumnName = "idClub")
 	    private Club club;
@@ -67,7 +85,21 @@ public class Team {
 	 public void setClub(Club club) {
 		 this.club=club;
 	 }
-    public Long getIdTeam() {
+	 
+	 
+	
+	 @ManyToOne
+	    @JoinColumn(name = "coach_id") // references the primary key 'id' of Coach
+	    private Coach coach; 
+		    	 
+    
+	public Coach getCoach() {
+		return coach;
+	}
+	public void setCoach(Coach coach) {
+		this.coach = coach;
+	}
+	public Long getIdTeam() {
 		return idTeam;
 	}
 	public void setIdTeam(Long idTeam) {

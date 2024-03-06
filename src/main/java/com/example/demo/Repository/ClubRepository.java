@@ -10,5 +10,5 @@ import com.example.demo.Model.Club;
 public interface ClubRepository extends JpaRepository<Club, Long> {
 	
     List<Club> findByClubNameContainingIgnoreCase(String clubName);
-    Optional<Club> findByClubName(String clubName);
+    Optional<Club> findByClubName(String clubName);//create this bech najem na3ti ism club kif nisna3 team
 }

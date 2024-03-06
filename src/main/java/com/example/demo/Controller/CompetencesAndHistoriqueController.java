@@ -7,18 +7,38 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/competencesAndHistorique")
+@RequestMapping("/api/competencesAndHistorique")
 public class CompetencesAndHistoriqueController {
 
     @Autowired
-    private CompetencesAndHistoriqueService service;
+     CompetencesAndHistoriqueService service;
 
+ // In CompetencesAndHistoriqueController.java
     @PostMapping("/add")
-    public CompetencesAndHistorique addCompetenceAndHistorique(@RequestBody CompetencesAndHistorique competencesAndHistorique) {
-        return service.saveCompetenceAndHistorique(competencesAndHistorique);
+    public CompetencesAndHistorique addCompetenceAndHistorique(@RequestBody Map<String, Object> payload) {
+        // Create a new CompetencesAndHistorique instance
+        CompetencesAndHistorique competencesAndHistorique = new CompetencesAndHistorique();
+        
+        // Extract and set values from the payload
+        String competence = (String) payload.get("competence");
+        String historiquePerformence = (String) payload.get("historiquePerformence");
+        Double kdRiot = payload.containsKey("kdRiot") ? ((Number) payload.get("kdRiot")).doubleValue() : null;
+        Double winPorsontage = payload.containsKey("winPorsontage") ? ((Number) payload.get("winPorsontage")).doubleValue() : null;
+        String playerName = (String) payload.get("playerName"); // Extract player name
+
+        // Set values to competencesAndHistorique
+        competencesAndHistorique.setCompetence(competence);
+        competencesAndHistorique.setHistoriquePerformence(historiquePerformence);
+        competencesAndHistorique.setKdRiot(kdRiot);
+        competencesAndHistorique.setWinPorsontage(winPorsontage);
+
+        // Save the competencesAndHistorique with the associated player name
+        return service.saveCompetenceAndHistorique(competencesAndHistorique, playerName);
     }
+
 
     @GetMapping("/getAll")
     public List<CompetencesAndHistorique> getAllCompetencesAndHistoriques() {
@@ -40,7 +60,6 @@ public class CompetencesAndHistoriqueController {
             existingCompetencesAndHistorique.setHistoriquePerformence(competencesAndHistoriqueDetails.getHistoriquePerformence());
             existingCompetencesAndHistorique.setKdRiot(competencesAndHistoriqueDetails.getKdRiot());
             existingCompetencesAndHistorique.setWinPorsontage(competencesAndHistoriqueDetails.getWinPorsontage());
-            existingCompetencesAndHistorique.setPlayerName(competencesAndHistoriqueDetails.getPlayerName());
             
             // Save the updated entity
             CompetencesAndHistorique updatedCompetencesAndHistorique = service.updateCompetenceAndHistorique(existingCompetencesAndHistorique);

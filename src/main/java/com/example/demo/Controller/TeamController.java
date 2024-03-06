@@ -36,20 +36,25 @@ public class TeamController {
 	public Team getTeamById(@PathVariable("id") Long id) {
 		return teamService.getTeam(id);
 	}
-	 @PostMapping("/add")
-	 public Team createTeam(@RequestBody Map<String, Object> payload) {
-	     String teamName = (String) payload.get("teamName");
-	     String description = (String) payload.get("description");
-	     String clubName = (String) payload.get("clubName");
-	     // Convert other fields similarly
-	     
-	     Team team = new Team();
-	     team.setTeamName(teamName);
-	     team.setDescription(description);
-	     // Set other fields
-	     
-	     return teamService.saveTeamWithClubName(team, clubName);
-	 }	
+	  @PostMapping("/add")
+	    public Team createTeam(@RequestBody Map<String, Object> payload) {
+	        String teamName = (String) payload.get("teamName");
+	        String description = (String) payload.get("description");
+	        String clubName = (String) payload.get("clubName");
+	        String coachName = (String) payload.get("coachName"); // Extract coachName from the payload
+
+	        Team team = new Team();
+	        team.setTeamName(teamName);
+	        team.setDescription(description);
+	        // Set other fields as necessary
+
+	        // First, save the team with its club name to set the relationship with the club
+	        team = teamService.saveTeamWithClubName(team, clubName);
+
+	        // Then, update the team with the coach name to set the relationship with the coach
+	        // This assumes saveTeamWithCoachName does both: saving the team if not already saved, and setting the coach
+	        return teamService.saveTeamWithCoachName(team, coachName);
+	    }	
 	 @PutMapping("/update/{id}")
 	public Team updateClub(@RequestBody Team team) {
 	    return teamService.UpdateTeam(team);

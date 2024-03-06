@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Model.Club;
+import com.example.demo.Model.Coach;
 import com.example.demo.Model.Player;
 import com.example.demo.Model.Team;
 import com.example.demo.Repository.ClubRepository;
+import com.example.demo.Repository.CoachRepository;
 import com.example.demo.Repository.PlayerRepository;
 import com.example.demo.Repository.TeamRepository;
 
@@ -24,6 +26,8 @@ TeamRepository teamRepository;
 ClubRepository clubRepository;
 @Autowired
 PlayerRepository playerRepository;
+@Autowired
+CoachRepository coachRepository;
 @Override
 public Team saveTeam(Team team) {
 	
@@ -93,6 +97,17 @@ public Team saveTeamWithClubName(Team team, String clubName) {
         team.setClub(club);
         return teamRepository.save(team);
     }).orElseThrow(() -> new RuntimeException("Club with name '" + clubName + "' not found"));
+}
+@Override
+@Transactional
+public Team saveTeamWithCoachName(Team team, String coachName) {
+    Coach coach = coachRepository.findByNameCoach(coachName)
+        .stream()
+        .findFirst()
+        .orElseThrow(() -> new RuntimeException("Coach not found with name: " + coachName));
+    
+    team.setCoach(coach); // Associate the found coach with the team
+    return teamRepository.save(team); // Save the team
 }
 
 
