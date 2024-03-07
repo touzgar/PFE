@@ -1,11 +1,17 @@
 package com.example.demo.Model;
 
 import jakarta.persistence.Entity;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class AchievementPlayer {
@@ -16,6 +22,17 @@ public class AchievementPlayer {
     private List<String> trophie;
     private Date dateAchievement;
     private Boolean status;
+    
+    @OneToOne
+    @JoinColumn(name = "player_id", nullable = true)
+    @JsonBackReference
+    private Player player;
+    
+ 
+    
+   
+    
+    
     
 	public Long getIdAchievementPlayer() {
 		return idAchievementPlayer;
@@ -47,6 +64,8 @@ public class AchievementPlayer {
 	public void setStatus(Boolean status) {
 		this.status = status;
 	}
+	
+	
 	public AchievementPlayer(Long idAchievementPlayer, String playerName, List<String> trophie, Date dateAchievement,
 			Boolean status) {
 		super();
@@ -58,8 +77,15 @@ public class AchievementPlayer {
 	}
 	public AchievementPlayer() {
 		super();
-		// TODO Auto-generated constructor stub
+	
 	}
+	public Player getPlayer() {
+		return player;
+	}
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
 
    
 }

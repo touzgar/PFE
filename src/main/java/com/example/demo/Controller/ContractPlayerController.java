@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/contractPlayer")
+@RequestMapping("/api/contractPlayer")
 @CrossOrigin("*")
 public class ContractPlayerController {
 

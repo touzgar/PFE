@@ -22,10 +22,16 @@ public class ContractPlayer {
     private Date date;
 
     @OneToOne
-    @JoinColumn(name = "player_id", nullable = false)
+    @JoinColumn(name = "player_id", nullable = true)
     @JsonBackReference
     private Player player;
 
+    
+    
+    
+    
+    
+    
 
     public ContractPlayer() {
     }

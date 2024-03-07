@@ -100,15 +100,18 @@ public Team saveTeamWithClubName(Team team, String clubName) {
 }
 @Override
 @Transactional
-public Team saveTeamWithCoachName(Team team, String coachName) {
+public Team saveTeamWithClubAndCoachName(Team team, String clubName, String coachName) {
+    Club club = clubRepository.findByClubName(clubName)
+        .orElseThrow(() -> new RuntimeException("Club with name '" + clubName + "' not found"));
+    team.setClub(club);
+
     Coach coach = coachRepository.findByNameCoach(coachName)
         .stream()
         .findFirst()
         .orElseThrow(() -> new RuntimeException("Coach not found with name: " + coachName));
-    
-    team.setCoach(coach); // Associate the found coach with the team
-    return teamRepository.save(team); // Save the team
-}
+    team.setCoach(coach);
 
+    return teamRepository.save(team);
+}
 
 }

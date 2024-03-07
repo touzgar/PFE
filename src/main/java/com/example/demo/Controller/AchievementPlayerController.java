@@ -9,16 +9,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/achievementPlayer")
+@RequestMapping("/api/achievementPlayer")
 public class AchievementPlayerController {
 
     @Autowired
     private AchievementPlayerService service;
 
     @PostMapping("/add")
-    public AchievementPlayer addAchievementPlayer(@RequestBody AchievementPlayer achievementPlayer) {
-        return service.saveAchievementPlayer(achievementPlayer);
+    public ResponseEntity<AchievementPlayer> addAchievementPlayer(@RequestBody AchievementPlayer achievementPlayer) {
+        try {
+            AchievementPlayer newAchievementPlayer = service.createAchievementPlayer(achievementPlayer);
+            return ResponseEntity.ok(newAchievementPlayer);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(null); // Consider customizing the error handling
+        }
     }
+
 
     @GetMapping("/getAll")
     public List<AchievementPlayer> getAllAchievementPlayers() {

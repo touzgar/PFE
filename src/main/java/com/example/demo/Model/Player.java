@@ -1,4 +1,3 @@
-///player.java
 package com.example.demo.Model;
 
 import jakarta.persistence.CascadeType;
@@ -20,6 +19,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Player {
@@ -80,17 +80,25 @@ public class Player {
 // Getter and Setter
        
      // Player can have zero or one contract
-    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.EAGER)
     private ContractPlayer contractPlayer;
-
+    
     public ContractPlayer getContractPlayer() {
         return contractPlayer;
     }
-
     public void setContractPlayer(ContractPlayer contractPlayer) {
         this.contractPlayer = contractPlayer;
+        contractPlayer.setPlayer(this); 
     }
     
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private AchievementPlayer AchievementPlayer;
+    
+
+
+	    
 	public Long getIdPlayer() {
         return idPlayer;
     }

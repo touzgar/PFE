@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,25 +37,29 @@ public class TeamController {
 	public Team getTeamById(@PathVariable("id") Long id) {
 		return teamService.getTeam(id);
 	}
-	  @PostMapping("/add")
-	    public Team createTeam(@RequestBody Map<String, Object> payload) {
-	        String teamName = (String) payload.get("teamName");
-	        String description = (String) payload.get("description");
-	        String clubName = (String) payload.get("clubName");
-	        String coachName = (String) payload.get("coachName"); // Extract coachName from the payload
+	 @PostMapping("/add")
+	 public ResponseEntity<?> createTeam(@RequestBody Map<String, Object> payload) {
+	     try {
+	         String teamName = (String) payload.get("teamName");
+	         String description = (String) payload.get("description");
+	         String clubName = (String) payload.get("clubName");
+	         String coachName = (String) payload.get("coachName"); // Make sure this key matches what you send from the client
 
-	        Team team = new Team();
-	        team.setTeamName(teamName);
-	        team.setDescription(description);
-	        // Set other fields as necessary
+	         if (coachName == null) {
+	             throw new IllegalArgumentException("Coach name and club name cannot be null ");
+	         }
 
-	        // First, save the team with its club name to set the relationship with the club
-	        team = teamService.saveTeamWithClubName(team, clubName);
-
-	        // Then, update the team with the coach name to set the relationship with the coach
-	        // This assumes saveTeamWithCoachName does both: saving the team if not already saved, and setting the coach
-	        return teamService.saveTeamWithCoachName(team, coachName);
-	    }	
+	         Team team = new Team();
+	         team.setTeamName(teamName);
+	         team.setDescription(description);
+	         
+	         // Use the service to handle the logic of adding club and coach by name
+	         Team savedTeam = teamService.saveTeamWithClubAndCoachName(team, clubName, coachName);
+	         return ResponseEntity.ok(savedTeam);
+	     } catch (Exception e) {
+	         return ResponseEntity.badRequest().body("Error creating team: " + e.getMessage());
+	     }
+	 }
 	 @PutMapping("/update/{id}")
 	public Team updateClub(@RequestBody Team team) {
 	    return teamService.UpdateTeam(team);
@@ -71,4 +76,5 @@ public class TeamController {
 	    public List<String> getTournamentsByTeamName(@PathVariable String teamName) {
 	        return teamService.findParticipatingTournamentsByTeamName(teamName);
 	    }
+	 
 }

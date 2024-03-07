@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -29,6 +30,7 @@ public class Team {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
  @Temporal(TemporalType.DATE)
  @DateTimeFormat(pattern = "yyyy-MM-dd")
+	
 	private Long idTeam;
 	private String teamName;
 	private String description;
